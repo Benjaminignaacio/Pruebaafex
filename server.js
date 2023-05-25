@@ -19,9 +19,10 @@ app.get('/videos', (req, res) => {
   });
 
 app.post('/videos', (req, res) => {
-    const { title, thumbnail, description } = req.body;
-    const query = 'INSERT INTO videos (title, thumbnail, description) VALUES (?, ?, ?)';
-    connection.query(query, [title, thumbnail, description], (error, results) => {
+    //console.log(req)
+    const { title, thumbnail, description,id } = req.body;
+    const query = 'INSERT INTO videos (title, thumbnail, description, link) VALUES (?, ?, ? ,?)';
+    connection.query(query, [title, thumbnail, description,id], (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).json({ error: 'Error al guardar el video' });
@@ -32,6 +33,10 @@ app.post('/videos', (req, res) => {
       }
     });
   });
+
+
+
+  
 
 app.delete('/videos/:id', (req, res) => {
   const videoId = req.params.id;
