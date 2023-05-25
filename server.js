@@ -8,30 +8,30 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/videos', (req, res) => {
-  connection.query('SELECT * FROM videos', (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al obtener los videos' });
-    } else {
-      res.json(results);
-    }
+    connection.query('SELECT * FROM videos', (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los videos' });
+      } else {
+        res.json(results);
+      }
+    });
   });
-});
 
 app.post('/videos', (req, res) => {
-  const { title, thumbnail, description } = req.body;
-  const query = 'INSERT INTO videos (title, thumbnail, description) VALUES (?, ?, ?)';
-  connection.query(query[title, thumbnail, description], (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al guardar el video' });
-    } else {
-      const insertedId = results.insertId;
-      const insertedVideo = { id: insertedId, title, thumbnail, description };
-      res.json(insertedVideo);
-    }
+    const { title, thumbnail, description } = req.body;
+    const query = 'INSERT INTO videos (title, thumbnail, description) VALUES (?, ?, ?)';
+    connection.query(query, [title, thumbnail, description], (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al guardar el video' });
+      } else {
+        const insertedId = results.insertId;
+        const insertedVideo = { id: insertedId, title, thumbnail, description };
+        res.json(insertedVideo);
+      }
+    });
   });
-});
 
 app.delete('/videos/:id', (req, res) => {
   const videoId = req.params.id;
